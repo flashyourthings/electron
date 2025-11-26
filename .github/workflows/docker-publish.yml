@@ -30,8 +30,6 @@ jobs:
         include:
           - balena_arch: aarch64
             docker_platform: linux/arm64
-          - balena_arch: armv7hf
-            docker_platform: linux/arm/v7
           - balena_arch: amd64
             docker_platform: linux/amd64
 
