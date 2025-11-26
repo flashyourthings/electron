@@ -4,7 +4,7 @@
 		"module": "es2015",
 		"outDir": "build",
 		"sourceMap": true,
-		"target": "es2019",
+		"target": "es2022",
 		"noImplicitAny": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,

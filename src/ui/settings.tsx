@@ -10,8 +10,6 @@ interface SettingsState {
 }
 
 class SettingsWindow extends React.Component<{}, SettingsState> {
-	private settings = electron.remote.getGlobal('BALENAELECTRONJS_SETTINGS');
-
 	constructor(props: {}) {
 		super(props);
 		this.state = {
@@ -22,11 +20,12 @@ class SettingsWindow extends React.Component<{}, SettingsState> {
 	}
 
 	private async init() {
-		const schema = await this.settings.getSchema();
-		const data = await this.settings.getData();
+		const schema = await electron.ipcRenderer.invoke('get-settings-schema');
+		const data = await electron.ipcRenderer.invoke('get-settings-data');
 		this.setState({ schema, data });
-		this.settings.on('change', async () => {
-			this.setState({ data: await this.settings.getData() });
+		electron.ipcRenderer.on('settings-changed', async () => {
+			const newData = await electron.ipcRenderer.invoke('get-settings-data');
+			this.setState({ data: newData });
 		});
 	}
 
@@ -47,7 +46,7 @@ class SettingsWindow extends React.Component<{}, SettingsState> {
 						const oldValue = this.state.data[key];
 						const newValue = newState.formData[key];
 						if (newValue !== oldValue) {
-							this.settings.set(key, newValue);
+							electron.ipcRenderer.invoke('set-setting', key, newValue);
 						}
 					}
 				}}

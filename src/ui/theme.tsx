@@ -21,6 +21,7 @@ export const Provider: React.FunctionComponent = (props) => (
 
 export const CloseableWindow: React.FunctionComponent<{
 	title: string;
+	children?: React.ReactNode;
 }> = (props) => (
 	<OverlayWindow>
 		<Flex justifyContent="space-between" alignItems="center" height="50px">

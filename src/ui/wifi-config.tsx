@@ -17,7 +17,7 @@ import { default as styled } from 'styled-components';
 import LockSvg from '@fortawesome/fontawesome-free/svgs/solid/lock.svg';
 import WrenchSvg from '@fortawesome/fontawesome-free/svgs/solid/wrench.svg';
 import ChevronLeftSvg from '@fortawesome/fontawesome-free/svgs/solid/chevron-left.svg';
-import TimesSvg from '@fortawesome/fontawesome-free/svgs/solid/times.svg';
+import TimesSvg from '@fortawesome/fontawesome-free/svgs/solid/xmark.svg';
 
 import { DBusObjectNode } from '../dbus';
 import { delay } from '../utils';

@@ -15,9 +15,9 @@
  */
 
 import Folder from '@fortawesome/fontawesome-free/svgs/solid/folder.svg';
-import FileAlt from '@fortawesome/fontawesome-free/svgs/solid/file-alt.svg';
+import FileAlt from '@fortawesome/fontawesome-free/svgs/solid/file-lines.svg';
 import * as debug_ from 'debug';
-import * as prettyBytes from 'pretty-bytes';
+import prettyBytes from 'pretty-bytes';
 import * as React from 'react';
 import { default as styled } from 'styled-components';
 
@@ -60,6 +60,7 @@ const ClickableFlex = styled.a<FlexProps>`
 
 interface FileListWrapProps {
 	className?: string;
+	children?: React.ReactNode;
 }
 
 class UnstyledFileListWrap extends React.PureComponent<FileListWrapProps> {

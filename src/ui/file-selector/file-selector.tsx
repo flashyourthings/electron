@@ -15,7 +15,7 @@
  */
 
 import AngleLeft from '@fortawesome/fontawesome-free/svgs/solid/angle-left.svg';
-import Hdd from '@fortawesome/fontawesome-free/svgs/solid/hdd.svg';
+import Hdd from '@fortawesome/fontawesome-free/svgs/solid/hard-drive.svg';
 import SourceSvg from './src.svg';
 import * as debug_ from 'debug';
 // import { promises as fs, readdirSync } from 'fs';

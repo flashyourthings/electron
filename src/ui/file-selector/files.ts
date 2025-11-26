@@ -20,8 +20,8 @@ import { getgid, getuid } from 'process';
 
 const CONCURRENCY = 10;
 const COLLATOR = new Intl.Collator(undefined, { sensitivity: 'case' });
-const GID = getgid();
-const UID = getuid();
+const GID = getgid?.();
+const UID = getuid?.();
 
 function compareFiles(fileA: FileEntry, fileB: FileEntry): number {
 	// used for sorting files

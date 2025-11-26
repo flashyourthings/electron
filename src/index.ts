@@ -48,7 +48,6 @@ function init() {
 			webPreferences: {
 				nodeIntegration: true,
 				contextIsolation: false,
-				enableRemoteModule: true,
 			},
 			transparent: true,
 			...(bounds ?? electron.screen.getPrimaryDisplay().workArea),
@@ -123,7 +122,7 @@ function init() {
 		}
 	}
 
-	electron.ipcMain.on('show-window', (_event: Event, name: WindowName) => {
+	electron.ipcMain.on('show-window', (_event: electron.IpcMainEvent, name: WindowName) => {
 		let win = windows.get(name);
 		if (win === undefined || win.isDestroyed()) {
 			win = createWindow(uiUrl(name));
@@ -139,6 +138,7 @@ function init() {
 		// delay required in order to have transparent windows
 		// https://github.com/electron/electron/issues/16809
 		const delay = env.BALENAELECTRONJS_OVERLAY_DELAY;
+		const delayMs = delay === undefined ? 200 : parseInt(delay, 10);
 		setTimeout(
 			() => {
 				const sleepPosition = getButtonPosition('sleep');
@@ -163,7 +163,7 @@ function init() {
 					createOverlayOpenButton('🖴', 'mounts', ...mountsPosition); // 198, 13
 				}
 			},
-			delay === undefined ? 200 : delay,
+			delayMs,
 		);
 		// _init exists on BrowserWindow's prototype
 		// @ts-ignore
@@ -194,6 +194,25 @@ function init() {
 	// @ts-ignore We're declaring a global that will be used in other projects that can't access balena-electron-env types
 	global.BALENAELECTRONJS_SETTINGS = Settings.getInstance();
 	screenSaverInit();
+
+	// Expose settings via IPC instead of remote module
+	const settingsInstance = Settings.getInstance();
+	electron.ipcMain.handle('get-settings-schema', async () => {
+		return await settingsInstance.getSchema();
+	});
+	electron.ipcMain.handle('get-settings-data', async () => {
+		return await settingsInstance.getData();
+	});
+	electron.ipcMain.handle('set-setting', async (_event, key: string, value: any) => {
+		return await settingsInstance.set(key, value);
+	});
+	
+	// Forward settings change events to all windows
+	settingsInstance.on('change', () => {
+		electron.BrowserWindow.getAllWindows().forEach((window) => {
+			window.webContents.send('settings-changed');
+		});
+	});
 }
 
 if (!initialized) {

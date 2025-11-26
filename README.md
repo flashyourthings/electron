@@ -13,14 +13,62 @@ Provides stuff that may be missing when running electron apps in kiosk mode
 
 ## Building
 
- Build and upload this project's docker images `./image-builder.sh`;
+### Using Pre-built Images
+
+Images are automatically built and published to GitHub Container Registry (GHCR) for all supported architectures:
+
+```bash
+# Pull images from GHCR
+docker pull ghcr.io/OWNER/REPO:aarch64-latest
+docker pull ghcr.io/OWNER/REPO:armv7hf-latest
+docker pull ghcr.io/OWNER/REPO:amd64-latest
+```
+
+Replace `OWNER/REPO` with your GitHub repository path (e.g., `balenablocks/balena-electron-env`).
+
+Images are tagged with:
+- `aarch64-latest`, `armv7hf-latest`, `amd64-latest` - Latest builds from main branch
+- `aarch64-v*`, `armv7hf-v*`, `amd64-v*` - Version tags
+- `aarch64-sha-*`, `armv7hf-sha-*`, `amd64-sha-*` - Git commit SHA tags
+
+### Building Locally
+
+Build and upload this project's docker images manually:
+```bash
+./image-builder.sh [docker-repo]
+```
+
+Or use GitHub Actions to build automatically on push to main/master or when creating version tags.
 
 ## Using
 
- * In your electron app project create a Dockerfile that uses this
- project: `FROM balenablocks/aarch64-balena-electron-env`,
- replace `aarch64` with the architecture you need (`aarch64`, `armv7hf` or `amd64`);
- * Put your electron app in `/usr/src/app` in this Dockerfile.
+### Using Images from GitHub Container Registry
+
+In your Electron app project, create a Dockerfile that uses this project:
+
+```dockerfile
+FROM ghcr.io/OWNER/REPO:aarch64-latest
+# Replace with your actual GitHub repository and desired architecture
+```
+
+Available architectures:
+- `aarch64-latest` - ARM64 (Raspberry Pi 4, etc.)
+- `armv7hf-latest` - ARMv7 (Raspberry Pi 3, etc.)
+- `amd64-latest` - x86_64 (Desktop/Server)
+
+### Using Images from BalenaBlocks
+
+Alternatively, use the original BalenaBlocks registry:
+
+```dockerfile
+FROM balenablocks/aarch64-balena-electron-env
+```
+
+Replace `aarch64` with the architecture you need (`aarch64`, `armv7hf` or `amd64`).
+
+### Application Setup
+
+Put your Electron app in `/usr/src/app` in your Dockerfile.
 
 This works by running a window manager (`metacity` for now), `dbus`, an
 on-screen keyboard (`onboard`) and requiring some js code before your

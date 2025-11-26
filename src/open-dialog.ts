@@ -14,7 +14,7 @@ export function init(
 		options: Electron.OpenDialogOptions,
 	): Promise<Electron.OpenDialogReturnValue> {
 		return new Promise((resolve) => {
-			electron.ipcMain.once('select-files', (_event: Event, arg: any) => {
+			electron.ipcMain.once('select-files', (_event: Electron.IpcMainEvent, arg: any) => {
 				resolve(arg);
 			});
 			createWindow(uiUrl('file-selector-window', options));
