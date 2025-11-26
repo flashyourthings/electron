@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.2
-FROM balenalib/%%BALENA_ARCH%%-node:20.18-bookworm-build as build
+FROM balenalib/%%BALENA_ARCH%%-node:20-bookworm-build as build
 
 RUN apt update
 RUN apt install libx11-dev libxss-dev libxss1
@@ -14,16 +14,17 @@ RUN make
 
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
-RUN npm ci
+# Use --force to ignore engine warnings (Node 20.12 is sufficient for our needs)
+RUN npm ci --force
 COPY tsconfig.webpack.json tsconfig.json webpack.config.ts ./
 COPY src src/
 COPY typings typings/
-ENV NODE_OPTIONS="--max-old-space-size=3072"
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN npm run build
 
 CMD sleep infinity
 
-FROM balenalib/%%BALENA_ARCH%%-node:20.18-bookworm-run as runtime
+FROM balenalib/%%BALENA_ARCH%%-node:20-bookworm-run as runtime
 
 # clicklock
 COPY --from=build /usr/src/clicklock/clicklock /usr/bin/clicklock
