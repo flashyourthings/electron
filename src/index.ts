@@ -71,7 +71,12 @@ function init() {
 		width: number,
 		height: number,
 	) {
-		createWindow(url, { x, y, width, height }, { focusable: false });
+		createWindow(url, { x, y, width, height }, { 
+			focusable: false,
+			hasShadow: false,
+			skipTaskbar: true,
+			opacity: 0.9999999,
+		});
 	}
 
 	function createOverlayOpenButton(
@@ -187,6 +192,7 @@ function init() {
 
 	openDialogInit(electron, createWindow);
 	electron.app.commandLine.appendSwitch('use-gl', 'desktop');
+	electron.app.commandLine.appendSwitch('enable-transparent-visuals');
 	// Remove this once https://github.com/electron/electron/issues/25153 is closed
 	// electron.app.disableHardwareAcceleration();
 	electron.app.on('ready', ready);
@@ -206,7 +212,7 @@ function init() {
 	electron.ipcMain.handle('set-setting', async (_event, key: string, value: any) => {
 		return await settingsInstance.set(key, value);
 	});
-	
+
 	// Forward settings change events to all windows
 	settingsInstance.on('change', () => {
 		electron.BrowserWindow.getAllWindows().forEach((window) => {
