@@ -13,7 +13,7 @@ export class OverlayIcon extends React.PureComponent<OverlayIconProps> {
 			<div
 				style={{
 					borderRadius: '50vh',
-					backgroundColor: 'transparent',
+					backgroundColor: '#3c3e42',
 					width: '100%',
 					height: '100vh',
 					fontSize: '14px',
