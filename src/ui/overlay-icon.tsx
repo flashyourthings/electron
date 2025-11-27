@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import './fonts.css';
 
 export interface OverlayIconProps {
@@ -7,46 +8,54 @@ export interface OverlayIconProps {
 	onClick: () => void;
 }
 
-export class OverlayIcon extends React.PureComponent<OverlayIconProps> {
-	public render() {
-		return (
-			<div
-				style={{
-					borderRadius: '50vh',
-					backgroundColor: '#3c3e42',
-					width: '100%',
-					height: '100vh',
-					fontSize: '14px',
-					userSelect: 'none',
-					cursor: 'pointer',
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
-					color: '#d3d6db',
-					fontWeight: 600,
-				}}
-				onClick={this.props.onClick.bind(this)}
-			>
-				{this.props.icon}
-				{this.renderText()}
-			</div>
-		);
-	}
+const Container = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+`;
 
-	private renderText() {
-		if (this.props.text) {
-			return (
-				<>
-					&nbsp;
-					<span
-						style={{
-							color: '#75777a',
-						}}
-					>
-						{this.props.text}
-					</span>
-				</>
-			);
-		}
+const Button = styled.button`
+	background-color: #3c3e42;
+	border: none;
+	border-radius: 12px;
+	padding: 4px 10px;
+	font-size: 14px;
+	font-weight: 600;
+	font-family: 'SourceSansPro', sans-serif;
+	color: #d3d6db;
+	cursor: pointer;
+	user-select: none;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	pointer-events: auto;
+	
+	&:hover {
+		background-color: #4a4c50;
 	}
-}
+	
+	&:active {
+		background-color: #2e3034;
+	}
+`;
+
+const SecondaryText = styled.span`
+	color: #75777a;
+`;
+
+export const OverlayIcon: React.FC<OverlayIconProps> = ({ icon, text, onClick }) => {
+	return (
+		<Container>
+			<Button onClick={onClick}>
+				{icon}
+				{text && <SecondaryText>{text}</SecondaryText>}
+			</Button>
+		</Container>
+	);
+};
