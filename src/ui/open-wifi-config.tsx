@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { DBusObjectNode } from '../dbus';
 
@@ -69,11 +69,18 @@ export class WifiStatusIcon extends React.PureComponent<{}, WifiIconProps> {
 	}
 }
 
-ReactDOM.render(
+const root = createRoot(document.body);
+root.render(
 	<div
 		style={{
 			userSelect: 'none',
 			cursor: 'pointer',
+			width: '100%',
+			height: '100%',
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			backgroundColor: '#4d5057',
 		}}
 		onClick={() => {
 			ipcRenderer.send('show-window', 'wifi-config');
@@ -81,5 +88,4 @@ ReactDOM.render(
 	>
 		<WifiStatusIcon />
 	</div>,
-	document.body,
 );
