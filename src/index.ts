@@ -71,11 +71,12 @@ function init() {
 		width: number,
 		height: number,
 	) {
-		createWindow(url, { x, y, width, height }, { 
+		createWindow(url, { x, y, width, height }, {
 			focusable: false,
 			hasShadow: false,
 			skipTaskbar: true,
-			opacity: 0.9999999,
+			transparent: false,
+			backgroundColor: '#4d5057',
 		});
 	}
 

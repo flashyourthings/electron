@@ -36,11 +36,11 @@ const Button = styled.button`
 	align-items: center;
 	gap: 4px;
 	pointer-events: auto;
-	
+
 	&:hover {
 		background-color: #4a4c50;
 	}
-	
+
 	&:active {
 		background-color: #2e3034;
 	}
